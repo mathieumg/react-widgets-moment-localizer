@@ -55,11 +55,11 @@ module.exports = function(moment){
     },
 
     parse: function(value, format, culture) {
-      return moment(value, format).locale(culture).toDate()
+      return getMoment(culture, value, format).toDate()
     },
 
     format: function(value, format, culture) {
-      return moment(value)[localField](culture).format(format)
+      return getMoment(culture, value).format(format)
     }
   }
 }
