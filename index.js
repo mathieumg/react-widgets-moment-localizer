@@ -4,7 +4,7 @@
 module.exports = function(moment){
   if (typeof moment !== 'function')
     throw new TypeError('You must provide a valid moment object')
-  
+
   var localField = typeof moment().locale === 'function' ? 'locale' : 'lang'
     , hasLocaleData = !!moment.localeData;
 
@@ -12,6 +12,10 @@ module.exports = function(moment){
     throw new TypeError(
       'The Moment localizer depends on the `localeData` api, please provide a moment object v2.2.0 or higher')
 
+  function getMoment(culture, value, format){
+    return culture ? moment(value, format)[localField](culture) : moment(value, format)
+  }
+  
   function endOfDecade(date) {
     return moment(date).add(10, 'year').add(-1, 'millisecond').toDate()
   }
@@ -36,10 +40,10 @@ module.exports = function(moment){
       year: 'YYYY',
 
       decade: function(date, culture, localizer) {
-        return localizer.format(date, 'YYYY', culture) 
+        return localizer.format(date, 'YYYY', culture)
           + ' - ' + localizer.format(endOfDecade(date), 'YYYY', culture)
       },
-      
+
       century: function(date, culture, localizer) {
         return localizer.format(date, 'YYYY', culture)
           + ' - ' + localizer.format(endOfCentury(date), 'YYYY', culture)
